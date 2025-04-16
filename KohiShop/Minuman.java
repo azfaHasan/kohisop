@@ -1,3 +1,4 @@
+// Alif
 public class Minuman extends Menu
 {
     public Minuman(String kode, String nama, int harga)

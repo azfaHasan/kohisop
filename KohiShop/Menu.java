@@ -1,3 +1,4 @@
+// Alif
 public abstract class Menu 
 {
     protected String nama;
