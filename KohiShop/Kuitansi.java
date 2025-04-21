@@ -5,18 +5,19 @@ public class Kuitansi {
     int jumlahItem,
     String metodePembayaran,
     String mataUang,
-    double saldo, // Changed from int to double
+    double saldo,
     KonversiMataUang konversi) {
-      System.out.println("\n========== KUITANSI PESANAN ==========");
-      System.out.println("           Warkop KohiShop           ");
-      System.out.println("======================================");
-      
-      int totalHargaMinuman = 0, totalHargaMakanan = 0;
-      double totalPajakMinuman = 0, totalPajakMakanan = 0;
-      int itemNotNull = jumlahItem;
 
-    System.out.println(">> MINUMAN");
-    for (int i = 0; i < itemNotNull;i++) {
+    System.out.println("\n+--------------------------------------------------------------------------------+");
+    System.out.println("|                                    Kuitansi                                    |");
+    System.out.println("|                                 Warkop KohiShop                                |");
+    System.out.println("+--------------------------------------------------------------------------------+");
+
+    int totalHargaMinuman = 0, totalHargaMakanan = 0;
+    double totalPajakMinuman = 0, totalPajakMakanan = 0;
+
+    System.out.println("| >> MINUMAN                                                                     |");
+    for (int i = 0; i < jumlahItem; i++) {
       if (itemPesanan[i].getMenu() instanceof Minuman) {
         int jumlah = itemPesanan[i].getJumlah();
         double harga = itemPesanan[i].getMenu().getHarga();
@@ -25,13 +26,15 @@ public class Kuitansi {
         totalHargaMinuman += subtotal;
         totalPajakMinuman += pajak;
 
-        System.out.printf("- %s (%s): %d x %.2f = %.2f + Pajak: %.2f\n", itemPesanan[i].getMenu().getNama(), itemPesanan[i].getMenu().getKode(), jumlah, harga,
-            subtotal, pajak);
+        System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
+          itemPesanan[i].getMenu().getNama(),
+          itemPesanan[i].getMenu().getKode(),
+          jumlah, harga, subtotal, pajak);
       }
     }
 
-    System.out.println(">> MAKANAN");
-    for (int i = 0; i < itemNotNull; i++) {
+    System.out.println("| >> MAKANAN                                                                     |");
+    for (int i = 0; i < jumlahItem; i++) {
       if (itemPesanan[i].getMenu() instanceof Makanan) {
         int jumlah = itemPesanan[i].getJumlah();
         double harga = itemPesanan[i].getMenu().getHarga();
@@ -40,8 +43,10 @@ public class Kuitansi {
         totalHargaMakanan += subtotal;
         totalPajakMakanan += pajak;
 
-        System.out.printf("- %s (%s): %d x %.2f = %.2f + Pajak: %.2f\n", itemPesanan[i].getMenu().getNama(), itemPesanan[i].getMenu().getKode(), jumlah, harga,
-            subtotal, pajak);
+        System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
+          itemPesanan[i].getMenu().getNama(),
+          itemPesanan[i].getMenu().getKode(),
+          jumlah, harga, subtotal, pajak);
       }
     }
 
@@ -49,10 +54,10 @@ public class Kuitansi {
     double totalPajak = totalPajakMinuman + totalPajakMakanan;
     double totalSetelahPajak = totalSebelumPajak + totalPajak;
 
-    System.out.println("--------------------------------------");
-    System.out.printf("Subtotal (sebelum pajak): %.2f IDR\n", (double) totalSebelumPajak);
-    System.out.printf("Total Pajak: %.2f IDR\n", totalPajak);
-    System.out.printf("Total (setelah pajak): %.2f IDR\n", totalSetelahPajak);
+    System.out.println("+--------------------------------------------------------------------------------+");
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Subtotal (sebelum pajak)", (double) totalSebelumPajak);
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Total Pajak", totalPajak);
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Total (setelah pajak)", totalSetelahPajak);
 
     double diskon = 0;
     double biayaAdmin = 0;
@@ -66,25 +71,26 @@ public class Kuitansi {
 
     double totalAkhir = totalSetelahPajak - diskon + biayaAdmin;
 
-    System.out.println("Metode Pembayaran: " + metodePembayaran);
-    System.out.printf("Diskon: -%.2f IDR\n", diskon);
-    System.out.printf("Biaya Admin: +%.2f IDR\n", biayaAdmin);
-    System.out.printf("Total Akhir: %.2f IDR\n", totalAkhir);
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Diskon", -diskon);
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Biaya Admin", biayaAdmin);
+    System.out.printf("| %-35s | %36.2f IDR |\n", "Total Akhir", totalAkhir);
 
     double totalDalamMataUang = konversi.konversi(totalAkhir, mataUang);
-    System.out.printf("Total Dibayar dalam %s: %.2f %s\n", mataUang, totalDalamMataUang, mataUang);
+    System.out.printf("| %-35s | %36.2f %s |\n", "Total dalam " + mataUang, totalDalamMataUang, mataUang);
 
     if (!metodePembayaran.equalsIgnoreCase("Tunai")) {
       if (saldo < totalAkhir) {
-        System.out.println("!! Saldo tidak mencukupi. Pembayaran gagal.");
+        System.out.println("| !! Saldo tidak mencukupi. Pembayaran gagal.                                    |");
+        System.out.println("+--------------------------------------------------------------------------------+");
         return;
       } else {
-        System.out.printf("Sisa saldo setelah pembayaran: %.2f IDR\n", saldo - totalAkhir);
+        System.out.printf("| %-35s | %36.2f IDR |\n", "Sisa saldo setelah pembayaran", saldo - totalAkhir);
       }
     }
 
-    System.out.println("======================================");
-    System.out.println("Terima kasih dan silakan datang kembali!");
+    System.out.println("+--------------------------------------------------------------------------------+");
+    System.out.println("|                      Terima kasih dan silakan datang kembali!                  |");
+    System.out.println("+--------------------------------------------------------------------------------+");
   }
 
   private static double hitungPajakMinuman(double harga) {
