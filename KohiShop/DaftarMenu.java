@@ -1,8 +1,5 @@
 public class DaftarMenu 
 {
-    // private ArrayList<Makanan> daftarMakanan;
-    // private ArrayList<Minuman> daftarMinuman;
-
     private Makanan[] daftarMakanan;
     private Minuman[] daftarMinuman;
 
@@ -15,23 +12,8 @@ public class DaftarMenu
 
     // Ini method buat mengisi arrayList daftarMakanan/Minuman
     // Sebenarnya bisa dijadikan satu di constructor, tapi nanti jadi kurang enak dibaca
-    // Method arrayList yang dipakek itu .add untuk memasukkan data ke arrayList
     void kontenMenu()
-    {
-        // daftarMakanan.add(new Makanan("M1", "Petemania Pizza", 112));
-        // daftarMakanan.add(new Makanan("M2", "Mie Rebus Super Mario", 35));
-        // daftarMakanan.add(new Makanan("M3", "Ayam Baka Goreng Rebus Spesial", 72));
-        // daftarMakanan.add(new Makanan("S1", "Singkong Bakar A La Carte", 37));
-        // daftarMakanan.add(new Makanan("S2", "Ubi Cilembu Bakar Arang", 58));
-        // daftarMakanan.add(new Makanan("S3", "Tempe Mendoan Kering", 18));
-
-        // daftarMinuman.add(new Minuman("A1", "Caffe Latte", 46));
-        // daftarMinuman.add(new Minuman("A2", "Cappuccino", 46));
-        // daftarMinuman.add(new Minuman("A3", "Kapal Api", 30));
-        // daftarMinuman.add(new Minuman("B1", "Freshly Brewed Coffee", 23));
-        // daftarMinuman.add(new Minuman("B2", "Vanilla Sweet Cream Cold Brew", 50));
-        // daftarMinuman.add(new Minuman("B3", "Cold Brew", 44));
-        
+    {   
         daftarMakanan[0] = (new Makanan("M1", "Petemania Pizza", 112));
         daftarMakanan[1] = (new Makanan("M2", "Mie Rebus Super Mario", 35));
         daftarMakanan[2] = (new Makanan("M3", "Ayam Baka Goreng Rebus Spesial", 72));
@@ -78,7 +60,7 @@ public class DaftarMenu
         System.out.println("+--------------------------------------------------------+");
         for(Minuman minuman : daftarMinuman)
         {
-            System.out.printf("| %-5s | %-33s | %-10d |\n", minuman.getKode(), minuman.getNama(), minuman.getHarga());
+            System.out.printf("| %-5s | %-33s | %-10.2f |\n", minuman.getKode(), minuman.getNama(), minuman.getHarga());
         }
         System.out.println("+--------------------------------------------------------+");
 
@@ -88,7 +70,7 @@ public class DaftarMenu
         System.out.println("+--------------------------------------------------------+");
         for(Makanan makanan : daftarMakanan)
         {
-            System.out.printf("| %-5s | %-33s | %-10d |\n", makanan.getKode(), makanan.getNama(), makanan.getHarga());
+            System.out.printf("| %-5s | %-33s | %-10.2f |\n", makanan.getKode(), makanan.getNama(), makanan.getHarga());
         }
         System.out.println("+--------------------------------------------------------+");
 

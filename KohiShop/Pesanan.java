@@ -15,6 +15,11 @@ public class Pesanan
         return this.pesanan; //pais//
     } //pais//
 
+    public int getJumlahItemTerdaftar()
+    {
+        return this.jumlahItemTerdaftar;
+    }
+
     public void prosesPesan(Menu menu, String inputPesan)
     {
         // Mulai dari variabel jumlah ini, digunakan untuk pengecekan kuantitas
@@ -41,7 +46,7 @@ public class Pesanan
 
         // Mulai if di bawah ini untuk user jika ingi membatalkan pesanan
         // Misalkan udah input menu A1. Pas ditanyain jumlah pesanan sama program, jika inputnya S atau 0 maka pesanan untuk menu itu gajadi
-        if(inputPesan.equalsIgnoreCase("S") || inputPesan == "0")
+        if(inputPesan.equalsIgnoreCase("S") || inputPesan.equalsIgnoreCase("0"))
         {
             for(int i = 0; i < jumlahItemTerdaftar; i++)
             {
@@ -51,77 +56,109 @@ public class Pesanan
                     {
                         pesanan[j] = pesanan[j + 1];
                     }
-                    pesanan[jumlahItemTerdaftar - 1] = null;
-                    jumlahItemTerdaftar--;
+                    pesanan[--jumlahItemTerdaftar] = null;
+                    System.out.println("Pesanan " + menu.getNama() + " berhasil dibatalkan.");
+                    return;
                 }
             }
         }
 
         // // Bagian di bawah ini sesuai soal, untuk bagian yang pesanan berulang
         // // Misalnya udah pesan A1 dengan jumlah 1. Kemudian pesan A1 lagi dengan jumlah 2, maka kuantitasnya jadi 3
-        int jumlah = 0;
-        try
+        int jumlahNew = 0;
+        if(inputPesan == null || inputPesan.trim().equals(""))
         {
-            jumlah = Integer.parseInt(inputPesan);
+            jumlahNew = 1;
         }
-        catch(NumberFormatException e)
+        else
         {
-            System.out.println("Input tidak valid, masukkan 0 atau S untuk batal. Angka > 0 untuk jumlah pesanan");
-            return;
+            try
+            {
+                jumlahNew = Integer.parseInt(inputPesan.trim());
+                if(jumlahNew <= 0)
+                {
+                    System.out.println("Jumlah pesanan tidak bisa 0");
+                    return;
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println("Input tidak valid, masukkan 0 atau S untuk batal. Angka > 0 untuk jumlah pesanan");
+                return;
+            }
         }
 
+        // Loop dan If Else ini digunakan saat user ingin menambahkan jumlah pesanan yang sudah dipesan sebelumnya
         for(int i = 0; i < jumlahItemTerdaftar; i++)
         {
             if(pesanan[i].getMenu().getKode().equalsIgnoreCase(menu.getKode()))
             {
-                pesanan[i].setJumlah(jumlah);
+                int jumlahBefore = pesanan[i].getJumlah();
+                int jumlahAfter = jumlahBefore + jumlahNew;
+
+                if(menu instanceof Minuman && jumlahAfter > 3)
+                {
+                    System.out.println("Pemesanan Minuman" + menu.getNama() + " tidak bisa lebih dari 3");
+                    return;                
+                }
+                else if(menu instanceof Makanan && jumlahAfter > 2)
+                {
+                    System.out.println("Pemesanan Makanan" + menu.getNama() + " tidak bisa lebih dari 2");
+                    return;
+                }
+
+                pesanan[i].setJumlah(jumlahAfter);
+                System.out.println("Jumlah " + menu.getNama() + " berhasil diperbarui menjadi " + jumlahAfter);
                 return;
             }
         }
-        // // Masih nyambung atasnya bagian ini agar jumlah total menu (jika termasuk Minuman) tidak lebih dari 3
-        if(menu instanceof Minuman && jumlahMinuman > 3)
+
+        // If Else ini digunakan pas user mesan Menu baru, bukan menambahkan jumlah pesanan
+        if(menu instanceof Minuman && jumlahNew > 3)
         {
-            System.out.println("Pemesanan Minuman" + menu.getNama() + " tidak bisa lebih dari 3");
+            System.out.println("Pemesanan Minuman " + menu.getNama() + " tidak bisa lebih dari 3");
             return;
         }
-        else if(menu instanceof Makanan && jumlahMakanan > 2)
+        // // Masih nyambung atasnya bagian ini agar jumlah total menu (jika termasuk Makanan) tidak lebih dari 2
+        else if(menu instanceof Makanan && jumlahNew > 2)
         {
-            System.out.println("Pemesanan Makanan" + menu.getNama() + " tidak bisa lebih dari 2");
+            System.out.println("Pemesanan Makanan " + menu.getNama() + " tidak bisa lebih dari 2");
             return;
         }
 
         // Menambahkan item ke array pesanan, dengan index yang digunakan adalah jumlahItemTerdaftar saat ini sebagai lokasi index kosong
-        pesanan[jumlahItemTerdaftar++] = new ItemPesanan(menu, jumlah);
+        pesanan[jumlahItemTerdaftar++] = new ItemPesanan(menu, jumlahNew);
+        System.out.println("Pesanan " + menu.getNama() + " berhasil ditambahkan sebanyak " + jumlahNew);
     }
 
     //Method untuk menghitung pajak (zen)
-    private int hitungPajak(Menu menu)
+    private double hitungPajak(Menu menu)
     {
-        int harga = menu.getHarga();
-        int pajak = 0;
+        double harga = menu.getHarga();
+        double pajak = 0;
 
         if(menu instanceof Minuman)
         {
             if(harga < 50) pajak = 0;
-            else if(harga <= 55) pajak = (int)(harga * 0.08);
-            else pajak = (int)(harga * 0.11);
+            else if(harga <= 55) pajak = (harga * 0.08);
+            else pajak = (harga * 0.11);
         }
         else if(menu instanceof Makanan)
         {
-            if(harga > 50) pajak = (int)(harga * 0.08);
-            else pajak = (int)(harga * 0.11);
+            if(harga > 50) pajak = (harga * 0.08);
+            else pajak = (harga * 0.11);
         }
 
         return pajak;
     }
 
     // Method untuk menampilkan HASIL PESANAN USER
-    public void tampilkanPesan()
+    public void tampilkanPesanan()
     {
-        int totalHargaMakanan = 0;
-        int totalHargaMinuman = 0;
-        int totalPajakMinuman = 0; //
-        int totalPajakMakanan = 0; //
+        double totalHargaMakanan = 0;
+        double totalHargaMinuman = 0;
+        double totalPajakMinuman = 0; //
+        double totalPajakMakanan = 0; //
 
         // Jika menu yang di loop dalam forEach loop termasuk minuman, maka dimasukkan di tabel minuman
         System.out.println("+----------------------------------------------------------------------------------+");
@@ -133,10 +170,10 @@ public class Pesanan
             if(pesanan[i].getMenu() instanceof Minuman)
             {
                 int jumlah = pesanan[i].getJumlah();
-                int subtotal = pesanan[i].getMenu().getHarga() * jumlah;
-                int pajak = hitungPajak(pesanan[i].getMenu()) * jumlah;
+                double subtotal = pesanan[i].getMenu().getHarga() * jumlah;
+                double pajak = hitungPajak(pesanan[i].getMenu()) * jumlah;
 
-                System.out.printf("| %-5s | %-33s | %-10d | %-10d | IDR %-6d |\n",
+                System.out.printf("| %-5s | %-33s | %-10d | %-10.2f | IDR %-6.2f |\n",
                     pesanan[i].getMenu().getKode(), pesanan[i].getMenu().getNama(), jumlah, subtotal, pajak);
 
                 totalHargaMinuman += subtotal;
@@ -154,10 +191,10 @@ public class Pesanan
             if(pesanan[i].getMenu() instanceof Makanan)
             {
                 int jumlah = pesanan[i].getJumlah();
-                int subtotal = pesanan[i].getMenu().getHarga() * jumlah;
-                int pajak = hitungPajak(pesanan[i].getMenu()) * jumlah;
+                double subtotal = pesanan[i].getMenu().getHarga() * jumlah;
+                double pajak = hitungPajak(pesanan[i].getMenu()) * jumlah;
 
-                System.out.printf("| %-5s | %-33s | %-10d | %-10d | IDR %-6d |\n",
+                System.out.printf("| %-5s | %-33s | %-10d | %-10.2f | IDR %-6.2f |\n",
                     pesanan[i].getMenu().getKode(), pesanan[i].getMenu().getNama(), jumlah, subtotal, pajak);
 
                 totalHargaMinuman += subtotal;
@@ -165,13 +202,13 @@ public class Pesanan
             }
         }
 
-        int totalHarga = totalHargaMakanan + totalHargaMinuman;
-        int totalPajak = totalPajakMinuman + totalPajakMakanan;
+        double totalHarga = totalHargaMakanan + totalHargaMinuman;
+        double totalPajak = totalPajakMinuman + totalPajakMakanan;
 
         System.out.println("+----------------------------------------------------------------------------------+");
-        System.out.printf("| %-20s | %-18d |\n", "Total Harga", totalHarga);
-        System.out.printf("| %-20s | %-18d |\n", "Total Pajak", totalPajak);
-        System.out.printf("| %-20s | %-18d |\n", "Total Bayar + Pajak", totalHarga + totalPajak);
+        System.out.printf("| %-20s | %-18.2f |\n", "Total Harga", totalHarga);
+        System.out.printf("| %-20s | %-18.2f |\n", "Total Pajak", totalPajak);
+        System.out.printf("| %-20s | %-18.2f |\n", "Total Bayar + Pajak", totalHarga + totalPajak);
         System.out.println("+-------------------------------------------+");
     }
 }
