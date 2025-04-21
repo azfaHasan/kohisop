@@ -1,10 +1,11 @@
+// Alif
 public abstract class Menu 
 {
     protected String nama;
     protected String kode;
-    protected int harga;
+    protected double harga;
 
-    public Menu(String kode, String nama, int harga)
+    public Menu(String kode, String nama, double harga)
     {
         this.kode = kode;
         this.nama = nama;
@@ -25,7 +26,7 @@ public abstract class Menu
         return this.nama;
     }
 
-    public int getHarga()
+    public double getHarga()
     {
         return this.harga;
     }

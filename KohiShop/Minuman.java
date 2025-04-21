@@ -1,6 +1,7 @@
+// Alif
 public class Minuman extends Menu
 {
-    public Minuman(String kode, String nama, int harga)
+    public Minuman(String kode, String nama, double harga)
     {
         super(kode, nama, harga);
     }
@@ -8,6 +9,6 @@ public class Minuman extends Menu
     @Override
     public void tampilkanData()
     {
-        System.out.printf("| %-2s | %-33s | %-2d |\n", getKode(), getNama(), getHarga());
+        System.out.printf("| %-2s | %-33s | %-2.2f |\n", getKode(), getNama(), getHarga());
     }
 }

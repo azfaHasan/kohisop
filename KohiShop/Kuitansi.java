@@ -1,45 +1,46 @@
-import java.util.*;
-
+// Zain
 public class Kuitansi {
   public static void cetak(
-      HashMap<Menu, Integer> pesanan,
-      String metodePembayaran,
-      String mataUang,
-      double saldo, // Changed from int to double
-      KonversiMataUang konversi) {
-    System.out.println("\n========== KUITANSI PESANAN ==========");
-    System.out.println("           Warkop KohiShop           ");
-    System.out.println("======================================");
-
-    int totalHargaMinuman = 0, totalHargaMakanan = 0;
-    double totalPajakMinuman = 0, totalPajakMakanan = 0;
+    ItemPesanan[] itemPesanan,
+    int jumlahItem,
+    String metodePembayaran,
+    String mataUang,
+    double saldo, // Changed from int to double
+    KonversiMataUang konversi) {
+      System.out.println("\n========== KUITANSI PESANAN ==========");
+      System.out.println("           Warkop KohiShop           ");
+      System.out.println("======================================");
+      
+      int totalHargaMinuman = 0, totalHargaMakanan = 0;
+      double totalPajakMinuman = 0, totalPajakMakanan = 0;
+      int itemNotNull = jumlahItem;
 
     System.out.println(">> MINUMAN");
-    for (Menu menu : pesanan.keySet()) {
-      if (menu instanceof Minuman) {
-        int jumlah = pesanan.get(menu);
-        int harga = menu.getHarga();
-        int subtotal = harga * jumlah;
+    for (int i = 0; i < itemNotNull;i++) {
+      if (itemPesanan[i].getMenu() instanceof Minuman) {
+        int jumlah = itemPesanan[i].getJumlah();
+        double harga = itemPesanan[i].getMenu().getHarga();
+        double subtotal = harga * jumlah;
         double pajak = hitungPajakMinuman(harga) * jumlah;
         totalHargaMinuman += subtotal;
         totalPajakMinuman += pajak;
 
-        System.out.printf("- %s (%s): %d x %d = %d + Pajak: %.2f\n", menu.getNama(), menu.getKode(), jumlah, harga,
+        System.out.printf("- %s (%s): %d x %.2f = %.2f + Pajak: %.2f\n", itemPesanan[i].getMenu().getNama(), itemPesanan[i].getMenu().getKode(), jumlah, harga,
             subtotal, pajak);
       }
     }
 
     System.out.println(">> MAKANAN");
-    for (Menu menu : pesanan.keySet()) {
-      if (menu instanceof Makanan) {
-        int jumlah = pesanan.get(menu);
-        int harga = menu.getHarga();
-        int subtotal = harga * jumlah;
+    for (int i = 0; i < itemNotNull; i++) {
+      if (itemPesanan[i].getMenu() instanceof Makanan) {
+        int jumlah = itemPesanan[i].getJumlah();
+        double harga = itemPesanan[i].getMenu().getHarga();
+        double subtotal = harga * jumlah;
         double pajak = hitungPajakMakanan(harga) * jumlah;
         totalHargaMakanan += subtotal;
         totalPajakMakanan += pajak;
 
-        System.out.printf("- %s (%s): %d x %d = %d + Pajak: %.2f\n", menu.getNama(), menu.getKode(), jumlah, harga,
+        System.out.printf("- %s (%s): %d x %.2f = %.2f + Pajak: %.2f\n", itemPesanan[i].getMenu().getNama(), itemPesanan[i].getMenu().getKode(), jumlah, harga,
             subtotal, pajak);
       }
     }
@@ -86,7 +87,7 @@ public class Kuitansi {
     System.out.println("Terima kasih dan silakan datang kembali!");
   }
 
-  private static double hitungPajakMinuman(int harga) {
+  private static double hitungPajakMinuman(double harga) {
     if (harga < 50)
       return 0;
     else if (harga <= 55)
@@ -95,7 +96,7 @@ public class Kuitansi {
       return harga * 0.11;
   }
 
-  private static double hitungPajakMakanan(int harga) {
+  private static double hitungPajakMakanan(double harga) {
     if (harga > 50)
       return harga * 0.08;
     else
