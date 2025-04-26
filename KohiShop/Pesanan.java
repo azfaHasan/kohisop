@@ -197,8 +197,8 @@ public class Pesanan
                 System.out.printf("| %-5s | %-33s | %-10d | %-10.2f | IDR %-6.2f |\n",
                     pesanan[i].getMenu().getKode(), pesanan[i].getMenu().getNama(), jumlah, subtotal, pajak);
 
-                totalHargaMinuman += subtotal;
-                totalPajakMinuman += pajak;
+                totalHargaMakanan += subtotal;
+                totalPajakMakanan += pajak;
             }
         }
 
