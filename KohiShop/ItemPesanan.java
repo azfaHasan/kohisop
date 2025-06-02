@@ -1,6 +1,4 @@
-// Alif
-// Class Baru ini digunakan untuk mengganti teknik (key -> value) dari HashMap
-// Untuk (key -> value) = (Menu(Makanan/Minuman) -> jumlah yang dipesan)
+// KoshiShop Part 2 : Pemesanan Makanan dan Minuman : Class ItemPesanan untuk mempermudah dalam mengolah menu dan jumlahnya
 public class ItemPesanan 
 {
     private Menu menu;
@@ -25,5 +23,10 @@ public class ItemPesanan
     public void setJumlah(int jumlah)
     {
         this.jumlah = jumlah;
+    }
+
+    public void addJumlah(int jumlah)
+    {
+        this.jumlah += jumlah;
     }
 }
