@@ -1,8 +1,9 @@
 // Zain
+import java.util.ArrayList;
+
 public class Kuitansi {
   public static void cetak(
-    ItemPesanan[] itemPesanan,
-    int jumlahItem,
+    ArrayList<ItemPesanan> jumlahItem,
     String metodePembayaran,
     String mataUang,
     double saldo,
@@ -17,35 +18,35 @@ public class Kuitansi {
     double totalPajakMinuman = 0, totalPajakMakanan = 0;
 
     System.out.println("| >> MINUMAN                                                                     |");
-    for (int i = 0; i < jumlahItem; i++) {
-      if (itemPesanan[i].getMenu() instanceof Minuman) {
-        int jumlah = itemPesanan[i].getJumlah();
-        double harga = itemPesanan[i].getMenu().getHarga();
+    for (ItemPesanan item : jumlahItem) {
+      if (item.getMenu() instanceof Minuman) {
+        int jumlah = item.getJumlah();
+        double harga = item.getMenu().getHarga();
         double subtotal = harga * jumlah;
         double pajak = hitungPajakMinuman(harga) * jumlah;
         totalHargaMinuman += subtotal;
         totalPajakMinuman += pajak;
 
         System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
-          itemPesanan[i].getMenu().getNama(),
-          itemPesanan[i].getMenu().getKode(),
+          item.getMenu().getNama(),
+          item.getMenu().getKode(),
           jumlah, harga, subtotal, pajak);
       }
     }
 
     System.out.println("| >> MAKANAN                                                                     |");
-    for (int i = 0; i < jumlahItem; i++) {
-      if (itemPesanan[i].getMenu() instanceof Makanan) {
-        int jumlah = itemPesanan[i].getJumlah();
-        double harga = itemPesanan[i].getMenu().getHarga();
+    for (ItemPesanan item : jumlahItem) {
+      if (item.getMenu() instanceof Makanan) {
+        int jumlah = item.getJumlah();
+        double harga = item.getMenu().getHarga();
         double subtotal = harga * jumlah;
         double pajak = hitungPajakMakanan(harga) * jumlah;
         totalHargaMakanan += subtotal;
         totalPajakMakanan += pajak;
 
         System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
-          itemPesanan[i].getMenu().getNama(),
-          itemPesanan[i].getMenu().getKode(),
+          item.getMenu().getNama(),
+          item.getMenu().getKode(),
           jumlah, harga, subtotal, pajak);
       }
     }

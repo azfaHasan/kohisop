@@ -1,57 +1,41 @@
+import java.util.ArrayList;;
+
 public class DaftarMenu 
 {
-    private Makanan[] daftarMakanan;
-    private Minuman[] daftarMinuman;
+    ArrayList<Makanan> daftarMakanan = new ArrayList<>();
+    ArrayList<Minuman> daftarMinuman = new ArrayList<>();
 
     public DaftarMenu()
     {
-        daftarMakanan = new Makanan[6];
-        daftarMinuman = new Minuman[6];
-        kontenMenu();
+        isikontenMenu();
     }
 
-    // Ini method buat mengisi arrayList daftarMakanan/Minuman
-    // Sebenarnya bisa dijadikan satu di constructor, tapi nanti jadi kurang enak dibaca
-    void kontenMenu()
+    // KohiShop Part 2 : Pemesanan Makanan dan Minuman : Method untuk mengisi menu ke arratlist agar rapi
+    void isikontenMenu()
     {   
-        daftarMakanan[0] = (new Makanan("M1", "Petemania Pizza", 112));
-        daftarMakanan[1] = (new Makanan("M2", "Mie Rebus Super Mario", 35));
-        daftarMakanan[2] = (new Makanan("M3", "Ayam Baka Goreng Rebus Spesial", 72));
-        daftarMakanan[3] = (new Makanan("S1", "Singkong Bakar A La Carte", 37));
-        daftarMakanan[4] = (new Makanan("S2", "Ubi Cilembu Bakar Arang", 58));
-        daftarMakanan[5] = (new Makanan("S3", "Tempe Mendoan Kering", 18));
+        daftarMakanan.add(new Makanan("M1", "Petemania Pizza", 112));
+        daftarMakanan.add(new Makanan("M2", "Mie Rebus Super Mario", 35));
+        daftarMakanan.add(new Makanan("M3", "Ayam Baka Goreng Rebus Spesial", 72));
+        daftarMakanan.add(new Makanan("M4", "Soto Kambing Iga Guling", 124));
+        daftarMakanan.add(new Makanan("S1", "Singkong Bakar A La Carte", 37));
+        daftarMakanan.add(new Makanan("S2", "Ubi Cilembu Bakar Arang", 58));
+        daftarMakanan.add(new Makanan("S3", "Tempe Mendoan Kering", 18));
+        daftarMakanan.add(new Makanan("S4", "Tahu Bakso Ekstra Telur", 28));
 
-        daftarMinuman[0] = (new Minuman("A1", "Caffe Latte", 46));
-        daftarMinuman[1] = (new Minuman("A2", "Cappuccino", 46));
-        daftarMinuman[2] = (new Minuman("A3", "Kapal Api", 30));
-        daftarMinuman[3] = (new Minuman("B1", "Freshly Brewed Coffee", 23));
-        daftarMinuman[4] = (new Minuman("B2", "Vanilla Sweet Cream Cold Brew", 50));
-        daftarMinuman[5] = (new Minuman("B3", "Cold Brew", 44));
+        daftarMinuman.add(new Minuman("A1", "Caffe Latte", 46));
+        daftarMinuman.add(new Minuman("A2", "Cappuccino", 46));
+        daftarMinuman.add(new Minuman("A3", "Kapal Api", 30));
+        daftarMinuman.add(new Minuman("E1", "Caffe Americano", 37));
+        daftarMinuman.add(new Minuman("E2", "Caffe Mocha", 55));
+        daftarMinuman.add(new Minuman("E3", "Caramel Macchiato", 59));
+        daftarMinuman.add(new Minuman("E4", "Asian Dolce Latte", 55));
+        daftarMinuman.add(new Minuman("E5", "Double Shots Iced Shaken Espresso", 50));
+        daftarMinuman.add(new Minuman("B1", "Freshly Brewed Coffee", 23));
+        daftarMinuman.add(new Minuman("B2", "Vanilla Sweet Cream Cold Brew", 50));
+        daftarMinuman.add(new Minuman("B3", "Cold Brew", 44));
     }
 
-    // Method ini dipakek di method main untuk validasi hasil inputan user, ada/tidak kode makanan minuman yang diinput
-    public Menu validasiMenu(String input)
-    {
-        for(Makanan makanan : daftarMakanan)
-        {
-            if(makanan.getKode().equalsIgnoreCase(input))
-            {
-                return makanan;
-            }
-        }
-
-        for(Minuman minuman : daftarMinuman)
-        {
-            if(minuman.getKode().equalsIgnoreCase(input))
-            {
-                return minuman;
-            }
-        }
-
-        return null;
-    }
-
-    // Method untuk nampilin semua menu dalam arrayList yang udah diisi sebelumnya
+    // Kohishop Part 2 : Pemesanan Makanan dan Minuman : Method untuk menampilkan daftar Menu 
     public void tampilkanDataAll()
     {
         // Minuman
@@ -63,7 +47,7 @@ public class DaftarMenu
             System.out.printf("| %-5s | %-33s | %-10.2f |\n", minuman.getKode(), minuman.getNama(), minuman.getHarga());
         }
         System.out.println("+--------------------------------------------------------+");
-
+        
         // Makanan
         System.out.println("\n+--------------------------------------------------------+");
         System.out.printf("| %-5s | %-33s | %-2s |\n", "Kode", "Menu Makanan", "Harga (Rp)");
@@ -73,6 +57,28 @@ public class DaftarMenu
             System.out.printf("| %-5s | %-33s | %-10.2f |\n", makanan.getKode(), makanan.getNama(), makanan.getHarga());
         }
         System.out.println("+--------------------------------------------------------+");
-
+        
+    }
+    
+    // KohiShop Part 2 : Pemesanan Makanan dan Minuman : Method untuk validasi kode menu dari input pengguna. Mengambil data menu dari arraylist class ini
+    public Menu validasiMenu(String input)
+    {
+        for(Makanan makanan : daftarMakanan)
+        {
+            if(makanan.getKode().equalsIgnoreCase(input))
+            {
+                return makanan;
+            }
+        }
+    
+        for(Minuman minuman : daftarMinuman)
+        {
+            if(minuman.getKode().equalsIgnoreCase(input))
+            {
+                return minuman;
+            }
+        }
+    
+        return null;
     }
 }

@@ -6,16 +6,14 @@ public class PesanApp
     {
         Scanner input = new Scanner(System.in);
         DaftarMenu daftar = new DaftarMenu();
-        Pesanan pesanan = new Pesanan();
-        ItemPesanan[] itemTerdaftar = pesanan.getPesanan();
-        int itemNotNull = pesanan.getJumlahItemTerdaftar();
+        ProsesPesan pesanan = new ProsesPesan();
 
         System.out.println("Selamat Datang, silahkan pilih menu yang tertera!");
        
         String inputAwal = "";
         boolean sudahPesan = false;
 
-        while (true) 
+        while (true)
         {
             System.out.println("\n1. Lihat Daftar Menu");
             System.out.println("2. Pesan Sekarang"); 
@@ -33,9 +31,8 @@ public class PesanApp
             {
                 while(true)
                 {
-                    String kodeMenu;
                     System.out.print("Input Kode Menu (input B untuk kembali ke menu utama): ");
-                    kodeMenu = input.nextLine();
+                    String kodeMenu = input.nextLine();
 
                     if(!kodeMenu.equalsIgnoreCase("b"))
                     {
@@ -46,10 +43,8 @@ public class PesanApp
                             continue;
                         }
     
-                        String kuantitas;
                         System.out.print("Input jumlah pesanan (input 0 atau S untuk membatalkan menu ini): ");
-                        kuantitas = input.nextLine();
-                        // Integer.parseInt(kuantitas);
+                        String kuantitas = input.nextLine();
     
                         pesanan.prosesPesan(menu, kuantitas);
                         sudahPesan = true;
@@ -60,13 +55,13 @@ public class PesanApp
                     }
                     else
                     {
-                        System.out.println("Silahkan input B untuk kembali, atau Input Kode Menu untuk");
+                        System.out.println("Silahkan input B untuk kembali, atau Input Kode Menu untuk melakukan pesanan!");
                     }
                 }
             }
 
             else if(inputAwal.equalsIgnoreCase("3")) {
-                if(sudahPesan) {
+                if(sudahPesan == true) {
                     pesanan.tampilkanPesanan();
             
                     while(true)
@@ -77,10 +72,10 @@ public class PesanApp
                         if(lanjut.equalsIgnoreCase("y")) {
                             int totalHarga = 0;
 
-                            for(int i = 0; i < itemNotNull;i++)
+                            for(ItemPesanan item : pesanan.getPesanan())
                             {
-                                Menu menu = itemTerdaftar[i].getMenu();
-                                int jumlah = itemTerdaftar[i].getJumlah();
+                                Menu menu = item.getMenu();
+                                int jumlah = item.getJumlah();
                                 totalHarga += menu.getHarga() * jumlah;
                             }
                 
@@ -123,17 +118,17 @@ public class PesanApp
                             // Pajak harus ditambahkan
                             double totalPajak = 0;
 
-                            for(int i = 0; i < itemNotNull; i++)
+                            for(ItemPesanan item : pesanan.getPesanan())
                             {
-                                int jumlah = itemTerdaftar[i].getJumlah();
+                                int jumlah = item.getJumlah();
 
-                                if(itemTerdaftar[i].getMenu() instanceof Minuman)
+                                if(item.getMenu() instanceof Minuman)
                                 {
-                                    totalPajak += jumlah * (itemTerdaftar[i].getMenu().getHarga() >= 50 ? (itemTerdaftar[i].getMenu().getHarga() <= 55 ? itemTerdaftar[i].getMenu().getHarga() * 0.08 : itemTerdaftar[i].getMenu().getHarga() * 0.11) : 0);
+                                    totalPajak += jumlah * (item.getMenu().getHarga() >= 50 ? (item.getMenu().getHarga() <= 55 ? item.getMenu().getHarga() * 0.08 : item.getMenu().getHarga() * 0.11) : 0);
                                 }
                                 else
                                 {
-                                    totalPajak += jumlah * (itemTerdaftar[i].getMenu().getHarga() > 50 ? itemTerdaftar[i].getMenu().getHarga() * 0.08 : itemTerdaftar[i].getMenu().getHarga() * 0.11);
+                                    totalPajak += jumlah * (item.getMenu().getHarga() > 50 ? item.getMenu().getHarga() * 0.08 : item.getMenu().getHarga() * 0.11);
                                 }
                             }
                 
@@ -162,7 +157,8 @@ public class PesanApp
                             };
                 
                             MataUang konversi = new MataUang();
-                            Kuitansi.cetak(pesanan.getPesanan(), pesanan.getJumlahItemTerdaftar(), metode, mataUang, saldo, konversi);
+                            Kuitansi.cetak(pesanan.getPesanan(), metode, mataUang, saldo, konversi);
+                            pesanan.getPesanan().clear();
                             break;
                         }
                         else if(lanjut.equalsIgnoreCase("n"))
