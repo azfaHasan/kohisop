@@ -2,8 +2,8 @@ import java.util.ArrayList;;
 
 public class DaftarMenu 
 {
-    ArrayList<Makanan> daftarMakanan = new ArrayList<>();
-    ArrayList<Minuman> daftarMinuman = new ArrayList<>();
+    private ArrayList<Makanan> daftarMakanan = new ArrayList<>();
+    private ArrayList<Minuman> daftarMinuman = new ArrayList<>();
 
     public DaftarMenu()
     {
