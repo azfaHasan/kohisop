@@ -1,5 +1,5 @@
 // Zain
-public class MataUang implements KonversiMataUang {
+public class MataUang implements IKonversiMataUang {
   @Override
   public double konversi(double totalAkhir, String mataUang) {
       switch (mataUang.toUpperCase()) {

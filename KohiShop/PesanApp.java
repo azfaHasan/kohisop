@@ -95,7 +95,7 @@ public class PesanApp
                             System.out.print("Masukkan pilihan: ");
                             String pilihan = input.nextLine();
                 
-                            Pembayaran bayar = null;
+                            IPembayaran bayar = null;
                             String metode = "";
                             double saldo = 0;
                 
