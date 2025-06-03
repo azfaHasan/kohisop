@@ -7,7 +7,7 @@ public class Kuitansi {
     String metodePembayaran,
     String mataUang,
     double saldo,
-    KonversiMataUang konversi) {
+    IKonversiMataUang konversi) {
 
     System.out.println("\n+--------------------------------------------------------------------------------+");
     System.out.println("|                                    Kuitansi                                    |");

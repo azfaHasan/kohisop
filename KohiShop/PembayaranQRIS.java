@@ -1,7 +1,7 @@
 // Faiz
 import java.util.Scanner;
 
-public class PembayaranQRIS implements Pembayaran {
+public class PembayaranQRIS implements IPembayaran {
     public static double getSaldoJikaPerlu(String channel, Scanner scanner) {
         if (channel.equalsIgnoreCase("qris") || channel.equalsIgnoreCase("emoney")) {
             System.out.print("Masukkan saldo Anda: ");

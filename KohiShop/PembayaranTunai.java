@@ -1,5 +1,5 @@
 // Faiz
-public class PembayaranTunai implements Pembayaran {
+public class PembayaranTunai implements IPembayaran {
     
     @Override
     public double prosesPembayaran(double totalHarga) {
