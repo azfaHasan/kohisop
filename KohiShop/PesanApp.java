@@ -5,10 +5,19 @@ public class PesanApp
     public static void main(String[] args) 
     {
         Scanner input = new Scanner(System.in);
+
+        // KohiShop Part 2 : Pemesanan Makanan dan Minuman : objek-objek untuk proses pemesanan
         DaftarMenu daftar = new DaftarMenu();
         ProsesPesan pesanan = new ProsesPesan();
 
-        System.out.println("Selamat Datang, silahkan pilih menu yang tertera!");
+        // KohiShop Part 2 : Membership : objek-objek untuk membership
+        MemberManagement membership = new MemberManagement();
+
+        // KohiShop Part 2 : Membership : meminta nama pengguna untuk menjadi member
+        System.out.print("Halo pelanggan, siapa nama anda ? ");
+        String namaPelanggan = input.nextLine();
+        membership.autoAddMember(namaPelanggan);
+        System.out.println("Selamat Datang " + namaPelanggan + "! silahkan pilih menu yang tertera!");
        
         String inputAwal = "";
         boolean sudahPesan = false;
@@ -157,7 +166,21 @@ public class PesanApp
                             };
                 
                             MataUang konversi = new MataUang();
+
+                            
                             Kuitansi.cetak(pesanan.getPesanan(), metode, mataUang, saldo, konversi);
+
+                            // KohiShop Part 2 : Membership : add belanja dan poin (jika memenuhi syarat) secara otomatis
+                            Membership currentMember = membership.getMember();
+
+                            int jumlahMenuDibeli = 0;
+                            for(ItemPesanan item : pesanan.getPesanan())
+                            {
+                                jumlahMenuDibeli += item.getJumlah();
+                            }
+
+                            currentMember.addBelanjaAndPoin(jumlahMenuDibeli);
+                            
                             pesanan.getPesanan().clear();
                             break;
                         }

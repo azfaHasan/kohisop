@@ -1,9 +1,8 @@
-import java.lang.reflect.Method;
 import java.util.ArrayList;;
 
 public class ProsesPesan 
 {
-    ArrayList<ItemPesanan> pesanan = new ArrayList<>();
+    private ArrayList<ItemPesanan> pesanan = new ArrayList<>();
 
     // KohiShop Part 2 : Pemesanan Makanan dan Minuman : Method tempat terjadinya proses pesan
     public void prosesPesan(Menu menu, String inputPesan)
@@ -23,7 +22,16 @@ public class ProsesPesan
         
         // KohiShop Part 2 : Pemesanan Makanan dan Minuman : Pembatasan jumlah makanan (2 Porsi) dan minuman (3 porsi)
         // Ini untuk menu yang sudah dipesan sebelumnya (penambahan porsi)
-        int jumlah = Integer.parseInt(inputPesan);
+        int jumlah = 0;
+        try
+        {
+            jumlah = Integer.parseInt(inputPesan);
+        }
+        catch(NumberFormatException e)
+        {
+            System.out.println("Input tidak valid, Masukkan jumlah pesanan dalam angka!");
+            return;
+        }
         
         if(jumlah < 0)
         {
@@ -48,6 +56,7 @@ public class ProsesPesan
                     return;
                 }
                 item.setJumlah(total);
+                System.out.println("Pesanan " + menu.getNama() + " berhasil ditambah menjadi " + total + " porsi!");
                 return;
             }
         }
@@ -126,46 +135,91 @@ public class ProsesPesan
         double totalPajakMinuman = 0;
         double totalPajakMakanan = 0;
 
-        // Jika menu yang di loop dalam forEach loop termasuk minuman, maka dimasukkan di tabel minuman
-        System.out.println("+----------------------------------------------------------------------------------+");
-        System.out.printf("| %-5s | %-33s | %-10s | %-10s | %-10s |\n", "Kode", "Menu Minuman", "Kuantitas", "Harga", "Pajak");
-        System.out.println("+----------------------------------------------------------------------------------+");
-        
+        // KohiShop Part 2 : Pemesanan Makanan dan Minuman : Daftar makanan dan minuman dalam arrayList yang diurutkan dengan bubble sort
+        ArrayList<ItemPesanan> daftarMinuman = new ArrayList<>();
+
         for(ItemPesanan item : pesanan)
         {
             if(item.getMenu() instanceof Minuman)
             {
-                int jumlah = item.getJumlah();
-                double subtotal = item.getMenu().getHarga() * jumlah;
-                double pajak = hitungPajak(item.getMenu()) * jumlah;
+                daftarMinuman.add(item);
+            }
+        }
 
-                System.out.printf("| %-5s | %-33s | %-10d | IDR %-6.2f | IDR %-6.2f |\n",
-                    item.getMenu().getKode(), item.getMenu().getNama(), jumlah, subtotal, pajak);
-
-                totalHargaMinuman += subtotal;
-                totalPajakMinuman += pajak;
+        for(int i = 0; i < daftarMinuman.size() - 1; i++)
+        {
+            for(int j = 0; j < daftarMinuman.size() - 1 - i; j++)
+            {
+                double harga1 = daftarMinuman.get(j).getMenu().getHarga() * daftarMinuman.get(j).getJumlah();
+                double harga2 = daftarMinuman.get(j + 1).getMenu().getHarga() * daftarMinuman.get(j + 1).getJumlah();
+            
+                if(harga1 < harga2)
+                {
+                    ItemPesanan temp = daftarMinuman.get(j);
+                    daftarMinuman.set(j, daftarMinuman.get(j + 1));
+                    daftarMinuman.set(j + 1, temp);
+                }
             }
         }
         
-        // Jika menu yang di loop dalam forEach loop termasuk makanan, maka dimasukkan di tabel minuman
         System.out.println("+----------------------------------------------------------------------------------+");
-        System.out.printf("| %-5s | %-33s | %-10s | %-10s | %-10s |\n", "Kode", "Menu Makanan", "Kuantitas", "Harga", "Pajak");
+        System.out.printf("| %-5s | %-33s | %-10s | %-10s | %-10s |\n", "Kode", "Menu Minuman", "Kuantitas", "Harga", "Pajak");
         System.out.println("+----------------------------------------------------------------------------------+");
         
+        for(ItemPesanan item : daftarMinuman)
+        {
+            int jumlah = item.getJumlah();
+            double subtotal = item.getMenu().getHarga() * jumlah;
+            double pajak = hitungPajak(item.getMenu()) * jumlah;
+            
+            System.out.printf("| %-5s | %-33s | %-10d | IDR %-6.2f | IDR %-6.2f |\n",
+            item.getMenu().getKode(), item.getMenu().getNama(), jumlah, subtotal, pajak);
+            
+            totalHargaMinuman += subtotal;
+            totalPajakMinuman += pajak;
+        }
+        
+        ArrayList<ItemPesanan> daftarMakanan = new ArrayList<>();
+
         for(ItemPesanan item : pesanan)
         {
             if(item.getMenu() instanceof Makanan)
             {
-                int jumlah = item.getJumlah();
-                double subtotal = item.getMenu().getHarga() * jumlah;
-                double pajak = hitungPajak(item.getMenu()) * jumlah;
-
-                System.out.printf("| %-5s | %-33s | %-10d | IDR %-6.2f | IDR %-6.2f |\n",
-                    item.getMenu().getKode(), item.getMenu().getNama(), jumlah, subtotal, pajak);
-
-                totalHargaMakanan += subtotal;
-                totalPajakMakanan += pajak;
+                daftarMakanan.add(item);
             }
+        }
+
+        for(int i = 0; i < daftarMakanan.size() - 1; i++)
+        {
+            for(int j = 0; j < daftarMakanan.size() - 1 - i; j++)
+            {
+                double harga1 = daftarMakanan.get(j).getMenu().getHarga() * daftarMakanan.get(j).getJumlah();
+                double harga2 = daftarMakanan.get(j + 1).getMenu().getHarga() * daftarMakanan.get(j + 1).getJumlah();
+            
+                if(harga1 < harga2)
+                {
+                    ItemPesanan temp = daftarMakanan.get(j);
+                    daftarMakanan.set(j, daftarMakanan.get(j + 1));
+                    daftarMakanan.set(j + 1, temp);
+                }
+            }
+        }
+        
+        System.out.println("+----------------------------------------------------------------------------------+");
+        System.out.printf("| %-5s | %-33s | %-10s | %-10s | %-10s |\n", "Kode", "Menu Makanan", "Kuantitas", "Harga", "Pajak");
+        System.out.println("+----------------------------------------------------------------------------------+");
+        
+        for(ItemPesanan item : daftarMakanan)
+        {
+            int jumlah = item.getJumlah();
+            double subtotal = item.getMenu().getHarga() * jumlah;
+            double pajak = hitungPajak(item.getMenu()) * jumlah;
+
+            System.out.printf("| %-5s | %-33s | %-10d | IDR %-6.2f | IDR %-6.2f |\n",
+            item.getMenu().getKode(), item.getMenu().getNama(), jumlah, subtotal, pajak);
+
+            totalHargaMakanan += subtotal;
+            totalPajakMakanan += pajak;
         }
 
         double totalHarga = totalHargaMakanan + totalHargaMinuman;
