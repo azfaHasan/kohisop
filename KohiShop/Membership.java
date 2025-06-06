@@ -75,3 +75,13 @@ public class Membership
         return hasil.toString();
     }
 }
+
+// pais //
+    public void gunakanPoin(int poinYangDigunakan) {
+        this.poin -= poinYangDigunakan;
+    }
+
+// pais //
+    public void setPoin(int poin) {
+        this.poin = poin;
+    }
