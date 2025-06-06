@@ -1,22 +1,23 @@
+
 // Faiz
 import java.util.Scanner;
 
 public class PembayaranQRIS implements IPembayaran {
-    public static double getSaldoJikaPerlu(String channel, Scanner scanner) {
-        if (channel.equalsIgnoreCase("qris") || channel.equalsIgnoreCase("emoney")) {
-            System.out.print("Masukkan saldo Anda: ");
-            return scanner.nextDouble();
-        }
-        return 0;
+    @Override
+    public double prosesPembayaran(double totalTagihan) {
+        double diskon = totalTagihan * 0.05; // Diskon 5%
+        System.out.printf("Metode QRIS: Mendapat diskon 5%% sebesar Rp %,.2f\n", diskon);
+        return totalTagihan - diskon;
     }
 
     @Override
-    public double prosesPembayaran(double totalHarga) {
-        return totalHarga * 0.95; // Diskon 5%
+    public boolean cekSaldo(double saldo, double totalTagihan) {
+        return saldo >= totalTagihan; // Saldo harus cukup
     }
 
-    @Override
-    public boolean cekSaldo(double saldo, double totalAkhir) {
-        return saldo >= totalAkhir;
+    // Ini method helper dari teman Anda, kita pertahankan
+    public static double getSaldoJikaPerlu(String metode, Scanner input) {
+        System.out.print("Masukkan saldo " + metode + " Anda: ");
+        return input.nextDouble();
     }
 }
