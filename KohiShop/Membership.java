@@ -66,4 +66,9 @@ public class Membership {
 
         return hasil.toString();
     }
+
+    // Faiz
+    public void setPoin(int poin) {
+        this.poin = poin;
+    }
 }

@@ -18,13 +18,14 @@ public class PesanApp {
         membership.autoAddMember(namaPelanggan);
         System.out.println("Selamat Datang " + namaPelanggan + "! silahkan pilih menu yang tertera!");
 
+        // Kode teman Anda untuk inisialisasi
         String inputAwal = "";
         boolean sudahPesan = false;
 
         while (true) {
             System.out.println("\n1. Lihat Daftar Menu");
             System.out.println("2. Pesan Sekarang");
-            System.out.println("3. Lihat Pesanan Anda");
+            System.out.println("3. Lihat Pesanan Anda & Bayar");
             System.out.println("\nCC. Keluar dan Batalkan Pesanan\n");
 
             inputAwal = input.nextLine();
@@ -34,6 +35,7 @@ public class PesanApp {
             }
 
             else if (inputAwal.equalsIgnoreCase("2")) {
+
                 while (true) {
                     System.out.print("Input Kode Menu (input B untuk kembali ke menu utama): ");
                     String kodeMenu = input.nextLine();
@@ -56,8 +58,18 @@ public class PesanApp {
                         System.out.println(
                                 "Silahkan input B untuk kembali, atau Input Kode Menu untuk melakukan pesanan!");
                     }
+
+                    System.out.print("Input jumlah pesanan (input 0 atau S untuk membatalkan menu ini): ");
+                    String kuantitas = input.nextLine();
+
+                    pesanan.prosesPesan(menu, kuantitas);
+                    sudahPesan = true;
                 }
-            }
+            } else if (inputAwal.equalsIgnoreCase("3")) {
+                if (!sudahPesan) {
+                    System.out.println("\nAnda belum membuat pesanan!");
+                    continue;
+                }
 
             else if (inputAwal.equalsIgnoreCase("3")) {
                 if (sudahPesan == true) {
@@ -197,7 +209,11 @@ public class PesanApp {
                             for (ItemPesanan item : pesanan.getPesanan()) {
                                 jumlahMenuDibeli += item.getJumlah();
                             }
-
+                            totalPajak += harga * tarifPajak * jumlah;
+                        }
+                        System.out.printf("Total Pajak: Rp %,.2f\n", totalPajak);
+                    }
+                  
                             currentMember.addBelanjaAndPoin(jumlahMenuDibeli);
 
                             pesanan.getPesanan().clear();
@@ -208,6 +224,9 @@ public class PesanApp {
                             System.out
                                     .println("Silahkan input (y) untuk lanjut, atau (n) untuk kemabali ke menu utama!");
                         }
+              
+                    } else {
+                        System.out.println("\nTagihan Anda sudah lunas dengan Poin!");
                     }
                 } else {
                     System.out.println("\nAnda belum membuat pesanan!");
@@ -220,5 +239,6 @@ public class PesanApp {
                 System.out.println("Input tidak valid, silahkan pilih salah satu menu yang tertera!");
             }
         }
+        input.close();
     }
 }
