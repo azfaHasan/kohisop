@@ -1,4 +1,4 @@
 // Zain
 public interface IKonversiMataUang {
-  double konversi(double totalAkhir, String mataUang);
+    double konversi(double totalAkhir, String mataUang);
 }

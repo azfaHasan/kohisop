@@ -25,6 +25,10 @@ public class Membership {
         return this.poin;
     }
 
+    public void resetPoin() {
+        this.poin = 0;
+    }
+
     public int getJumlahBelanja() {
         return this.jumlahBelanja;
     }

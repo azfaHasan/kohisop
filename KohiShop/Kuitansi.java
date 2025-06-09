@@ -1,13 +1,14 @@
+
 // Zain
 import java.util.ArrayList;
 
 public class Kuitansi {
   public static void cetak(
-    ArrayList<ItemPesanan> jumlahItem,
-    String metodePembayaran,
-    String mataUang,
-    double saldo,
-    IKonversiMataUang konversi) {
+      ArrayList<ItemPesanan> jumlahItem,
+      String metodePembayaran,
+      String mataUang,
+      double saldo,
+      IKonversiMataUang konversi) {
 
     System.out.println("\n+--------------------------------------------------------------------------------+");
     System.out.println("|                                    Kuitansi                                    |");
@@ -28,9 +29,9 @@ public class Kuitansi {
         totalPajakMinuman += pajak;
 
         System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
-          item.getMenu().getNama(),
-          item.getMenu().getKode(),
-          jumlah, harga, subtotal, pajak);
+            item.getMenu().getNama(),
+            item.getMenu().getKode(),
+            jumlah, harga, subtotal, pajak);
       }
     }
 
@@ -45,9 +46,9 @@ public class Kuitansi {
         totalPajakMakanan += pajak;
 
         System.out.printf("| %-30s (%s) : %2d x %7.2f = %8.2f + Pajak: %7.2f |\n",
-          item.getMenu().getNama(),
-          item.getMenu().getKode(),
-          jumlah, harga, subtotal, pajak);
+            item.getMenu().getNama(),
+            item.getMenu().getKode(),
+            jumlah, harga, subtotal, pajak);
       }
     }
 
