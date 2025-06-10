@@ -1,5 +1,6 @@
 
 // KohiShop Part 2 : Membership : Blueprint member KohiShop
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Membership {
@@ -9,6 +10,7 @@ public class Membership {
     private String nama;
     private int poin;
     private int jumlahBelanja;
+    private ArrayList<ItemPesanan> riwayatPesanan = new ArrayList<>();
 
     public Membership(String nama) {
         this.nama = nama;
@@ -67,6 +69,16 @@ public class Membership {
         }
 
         return hasil.toString();
+    }
+
+    public void addRiwayatPesanan(ArrayList<ItemPesanan> p)
+    {
+        this.riwayatPesanan.addAll(p);
+    }
+
+    public ArrayList<ItemPesanan> getRiwayatPesanan()
+    {
+        return riwayatPesanan;
     }
 
     // Faiz
