@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PesanApp {
@@ -10,20 +11,23 @@ public class PesanApp {
 
         // KohiShop Part 2 : Membership : objek-objek untuk membership
         MemberManagement membership = new MemberManagement();
-
-        // KohiShop Part 2 : Membership : meminta nama pengguna untuk menjadi member
-        System.out.print("Halo pelanggan, siapa nama anda ? ");
-        String namaPelanggan = input.nextLine();
-        membership.autoAddMember(namaPelanggan);
-        System.out.println("Selamat Datang " + namaPelanggan + "! silahkan pilih menu yang tertera!");
+        
+        //KohiShop Part 2 : Proses Pesanan Tim Dapur : objek class dapur
+        Dapur dapur = new Dapur();
 
         String inputAwal = "";
         boolean sudahPesan = false;
 
+        tanyaNama(input, membership);
+        String namaPelanggan = membership.getMember().getNama();
+        
         while (true) {
-            System.out.println("\n1. Lihat Daftar Menu");
+            
+            System.out.println("\nSelamat Datang " + namaPelanggan + "! silahkan pilih menu yang tertera!");
+            System.out.println("1. Lihat Daftar Menu");
             System.out.println("2. Pesan Sekarang");
-            System.out.println("3. Lihat Pesanan Anda");
+            System.out.println("3. Lihat atau Finalisasi Pesanan Anda");
+            System.out.println("4. Lihat antrian dapur");
             System.out.println("\nCC. Keluar Dari Aplikasi\n");
 
             inputAwal = input.nextLine();
@@ -57,7 +61,6 @@ public class PesanApp {
                     }
                 }
             }
-
             else if (inputAwal.equalsIgnoreCase("3")) {
                 if (sudahPesan == true) {
                     pesanan.tampilkanPesanan();
@@ -175,13 +178,15 @@ public class PesanApp {
                             // Jika IDR dan punya poin, gunakan poin untuk diskon
                             if (mataUang.equals("IDR") && currentMember.getPoin() > 0) {
                                 int poin = currentMember.getPoin();
-                                double diskonPoin = poin * 2; // 1 poin = 2 IDR
-                                if (totalAkhir < diskonPoin) {
-                                    diskonPoin -= totalAkhir;
+                                int diskonPoin = poin * 2; // 1 poin = 2 IDR
+                                int poinTerpakai = (int) Math.ceil(totalAkhir / 2.0);
+                                if (diskonPoin > totalAkhir) {
+                                    totalAkhir -= diskonPoin;
                                     System.out.println("Diskon sebesar Rp " + diskonPoin + " telah digunakan dari " + poin + " poin.");
-                                    currentMember.resetPoin();
+                                    int sisaPoint = poin - poinTerpakai;
+                                    currentMember.setPoin(sisaPoint);
                                 } else {
-                                    System.out.println("Total lebih kecil dari diskon poin. Poin tidak digunakan dalam pembayaran.");
+                                    System.out.println("Poin lebih kecil dari total harga. Poin tidak digunakan dalam pembayaran.");
                                 }
                             } else if (!mataUang.equals("IDR")) {
                                 System.out.println("Pembayaran bukan IDR, poin tidak dapat digunakan, tapi tetap disimpan.");
@@ -192,28 +197,96 @@ public class PesanApp {
                             for (ItemPesanan item : pesanan.getPesanan()) {
                                 jumlahMenuDibeli += item.getJumlah();
                             }
-
                             currentMember.addBelanjaAndPoin(jumlahMenuDibeli);
 
+                            // KohiShop Part 2 : Membership : nyimpen riiwayat pemesanan current member ke database
+                            currentMember.addRiwayatPesanan(new ArrayList<>(pesanan.getPesanan()));
                             pesanan.getPesanan().clear();
+
                             sudahPesan = false;
                             break;
                         } else if (lanjut.equalsIgnoreCase("n")) {
                             break;
                         } else {
-                            System.out
-                                    .println("Silahkan input (y) untuk lanjut, atau (n) untuk kemabali ke menu utama!");
+                            System.out.println("Silahkan input (y) untuk lanjut, atau (n) untuk kemabali ke menu utama!");
                         }
                     }
                 } else {
                     System.out.println("\nAnda belum membuat pesanan!");
                 }
-            } else if (inputAwal.equalsIgnoreCase("CC")) {
-                break;
+            } 
+            // KohiShop Part 2 : Proses Pesanan Tim Dapur : pilihan user mengakses proses yang sedang berjalan
+            else if(inputAwal.equalsIgnoreCase("4")){
+                int totalProses = 0;
+
+                for(Membership m : membership.getMemberDatabase())
+                {
+                    if(!m.getRiwayatPesanan().isEmpty())
+                    {
+                        totalProses++;
+                    }
+                }
+
+                if(totalProses < 3)
+                {
+                    System.out.println("Belum ada proses yang berjalan di dapur!");
+                }
+                else
+                {
+                    dapur.prosesDapur(membership.getMemberDatabase());
+                }
+            }
+            else if (inputAwal.equalsIgnoreCase("CC")) {
+                tanyaNama(input, membership);
             }
 
             else {
                 System.out.println("Input tidak valid, silahkan pilih salah satu menu yang tertera!");
+            }
+        }
+    }
+
+    // KohiShop Part 2 : Membership : method untuk menanyakan nama pelanggan
+    // dipakek agar dalam satu sesi program bisa ada lebih dari 1 pelanggan
+    public static void tanyaNama(Scanner input, MemberManagement database)
+    {
+        while (true) 
+        {
+            System.out.println("Selamat Datang di KohiSop");
+            System.out.print("Halo pelanggan, siapa nama anda? (Input C untuk mematikan program)");
+            
+            String nama = input.nextLine();
+
+            if(nama.equalsIgnoreCase("c"))
+            {
+                System.exit(1);
+            }
+            else
+            {
+                boolean terdaftar = false;
+    
+                for(Membership m : database.getMemberDatabase())
+                {
+                    if(m.getNama().equalsIgnoreCase(nama))
+                    {
+                        System.out.println("\nNama " + nama + " sudah terdaftar!");
+                        database.setMember(m);
+                        terdaftar = true;
+                        break;
+                    }
+                }
+    
+                if(!terdaftar)
+                {
+                    if(nama.matches("[0-9]+"))
+                    {
+                        System.out.println("Error! Nama diawali angka.");
+                        continue;
+                    }
+
+                    database.autoAddMember(nama);
+                }
+                break;
             }
         }
     }
