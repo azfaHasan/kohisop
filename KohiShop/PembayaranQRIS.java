@@ -1,4 +1,3 @@
-
 // Faiz
 import java.util.Scanner;
 
@@ -15,8 +14,7 @@ public class PembayaranQRIS implements IPembayaran {
         return saldo >= totalTagihan; // Saldo harus cukup
     }
 
-    // Ini method helper dari teman Anda, kita pertahankan
-    public static double getSaldoJikaPerlu(String metode, Scanner input) {
+    public static double getSaldoQRIS(String metode, Scanner input) {
         System.out.print("Masukkan saldo " + metode + " Anda: ");
         return input.nextDouble();
     }

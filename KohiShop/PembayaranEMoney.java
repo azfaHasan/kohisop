@@ -1,4 +1,3 @@
-
 // Faiz
 import java.util.Scanner;
 
@@ -14,11 +13,10 @@ public class PembayaranEMoney implements IPembayaran {
 
     @Override
     public boolean cekSaldo(double saldo, double totalTagihan) {
-        return saldo >= totalTagihan; // Saldo harus cukup
+        return saldo >= totalTagihan;
     }
 
-    // Ini method helper dari teman Anda, kita pertahankan
-    public static double getSaldoJikaPerlu(String metode, Scanner input) {
+    public static double getSaldoEMoney(String metode, Scanner input) {
         System.out.print("Masukkan saldo " + metode + " Anda: ");
         return input.nextDouble();
     }

@@ -38,6 +38,8 @@ public class Membership {
     }
 
     public void addBelanjaAndPoin(int jumlahMenuDibeli) {
+        System.out.println("Jumlah poin " + getNama() + " sekarang: " + poin);
+
         this.jumlahBelanja += jumlahMenuDibeli;
 
         int poinNew = jumlahMenuDibeli / 10;
@@ -45,14 +47,14 @@ public class Membership {
         if (poinNew > 0) {
             if (kode.contains("A")) {
                 poinNew *= 2;
-                System.out.println("\nKode membermu ada huruf A! poin yang didapatkan saat ini jadi " + poin);
+                System.out.println("Kode membermu ada huruf A, kamu dapat " + poinNew + " poin!");
             }
 
             this.poin += poinNew;
 
-            System.out.println("\nPoin member" + getNama() + " bertambah menjadi " + poin + " poin!");
+            System.out.println("Poin member " + getNama() + " bertambah! sekarang jadi " + poin + " poin!");
         } else {
-            System.out.println("\nJumlah belanjamu masih kurang buat dapat poin.");
+            System.out.println("Jumlah belanjamu masih kurang buat dapat poin.");
         }
     }
 
