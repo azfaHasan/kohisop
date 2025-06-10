@@ -4,8 +4,7 @@ public class PesanApp {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        // KohiShop Part 2 : Pemesanan Makanan dan Minuman : objek-objek untuk proses
-        // pemesanan
+        // KohiShop Part 2 : Pemesanan Makanan dan Minuman : objek-objek untuk proses pemesanan
         DaftarMenu daftar = new DaftarMenu();
         ProsesPesan pesanan = new ProsesPesan();
 
@@ -25,7 +24,7 @@ public class PesanApp {
             System.out.println("\n1. Lihat Daftar Menu");
             System.out.println("2. Pesan Sekarang");
             System.out.println("3. Lihat Pesanan Anda");
-            System.out.println("\nCC. Keluar dan Batalkan Pesanan\n");
+            System.out.println("\nCC. Keluar Dari Aplikasi\n");
 
             inputAwal = input.nextLine();
 
@@ -95,13 +94,13 @@ public class PesanApp {
                                 case "2":
                                     bayar = new PembayaranQRIS();
                                     metode = "QRIS";
-                                    saldo = PembayaranQRIS.getSaldoJikaPerlu("qris", input);
+                                    saldo = PembayaranQRIS.getSaldoQRIS("qris", input);
                                     input.nextLine();
                                     break;
                                 case "3":
                                     bayar = new PembayaranEMoney();
                                     metode = "eMoney";
-                                    saldo = PembayaranEMoney.getSaldoJikaPerlu("emoney", input);
+                                    saldo = PembayaranEMoney.getSaldoEMoney("emoney", input);
                                     input.nextLine();
                                     break;
                                 default:
@@ -176,23 +175,19 @@ public class PesanApp {
                             // Jika IDR dan punya poin, gunakan poin untuk diskon
                             if (mataUang.equals("IDR") && currentMember.getPoin() > 0) {
                                 int poin = currentMember.getPoin();
-                                double diskonPoin = poin * 100; // misal: 1 poin = Rp 100
-                                if (totalAkhir >= diskonPoin) {
-                                    totalAkhir -= diskonPoin;
-                                    System.out.println("Diskon sebesar Rp " + diskonPoin + " telah digunakan dari "
-                                            + poin + " poin.");
+                                double diskonPoin = poin * 2; // 1 poin = 2 IDR
+                                if (totalAkhir < diskonPoin) {
+                                    diskonPoin -= totalAkhir;
+                                    System.out.println("Diskon sebesar Rp " + diskonPoin + " telah digunakan dari " + poin + " poin.");
                                     currentMember.resetPoin();
                                 } else {
-                                    System.out.println("Total lebih kecil dari diskon poin. Tidak digunakan.");
+                                    System.out.println("Total lebih kecil dari diskon poin. Poin tidak digunakan dalam pembayaran.");
                                 }
                             } else if (!mataUang.equals("IDR")) {
-                                System.out.println(
-                                        "Pembayaran bukan IDR, poin tidak dapat digunakan, tapi tetap disimpan.");
+                                System.out.println("Pembayaran bukan IDR, poin tidak dapat digunakan, tapi tetap disimpan.");
                             }
 
-                            // KohiShop Part 2 : Membership : add belanja dan poin (jika memenuhi syarat)
-                            // secara otomatis
-
+                            // KohiShop Part 2 : Membership : add belanja dan poin (jika memenuhi syarat) secara otomatis
                             int jumlahMenuDibeli = 0;
                             for (ItemPesanan item : pesanan.getPesanan()) {
                                 jumlahMenuDibeli += item.getJumlah();
@@ -201,6 +196,7 @@ public class PesanApp {
                             currentMember.addBelanjaAndPoin(jumlahMenuDibeli);
 
                             pesanan.getPesanan().clear();
+                            sudahPesan = false;
                             break;
                         } else if (lanjut.equalsIgnoreCase("n")) {
                             break;
