@@ -259,7 +259,7 @@ public class PesanApp {
 
             if(nama.equalsIgnoreCase("c"))
             {
-                System.exit(1);
+                System.exit(0);
             }
             else
             {
