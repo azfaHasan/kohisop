@@ -38,8 +38,11 @@ public class PesanApp {
 
             else if (inputAwal.equalsIgnoreCase("2")) {
                 while (true) {
+                    String kodeMenu;
+                    String kuantitas;
+                    
                     System.out.print("Input Kode Menu (input B untuk kembali ke menu utama): ");
-                    String kodeMenu = input.nextLine();
+                    kodeMenu = input.nextLine();
 
                     if (!kodeMenu.equalsIgnoreCase("b")) {
                         Menu menu = daftar.validasiMenu(kodeMenu);
@@ -49,7 +52,7 @@ public class PesanApp {
                         }
 
                         System.out.print("Input jumlah pesanan (input 0 atau S untuk membatalkan menu ini): ");
-                        String kuantitas = input.nextLine();
+                        kuantitas = input.nextLine();
 
                         pesanan.prosesPesan(menu, kuantitas);
                         sudahPesan = true;
