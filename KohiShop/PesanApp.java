@@ -53,11 +53,8 @@ public class PesanApp {
 
                         pesanan.prosesPesan(menu, kuantitas);
                         sudahPesan = true;
-                    } else if (kodeMenu.equalsIgnoreCase("b")) {
-                        break;
                     } else {
-                        System.out.println(
-                                "Silahkan input B untuk kembali, atau Input Kode Menu untuk melakukan pesanan!");
+                        break;
                     }
                 }
             }
